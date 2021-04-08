@@ -67,4 +67,12 @@ public class GameCharacter {
 
     public void action(GameCharacter a) {
     }
+
+    public int getPower() {
+        return power;
+    }
+
+    public void setPower(int i) {
+        power = i;
+    }
 }

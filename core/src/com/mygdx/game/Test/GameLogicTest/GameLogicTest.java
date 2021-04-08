@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -52,11 +53,17 @@ public class GameLogicTest {
         Combat c = new Combat(gl.getPlayer(), mob);
 
         System.out.println("Combat begins.");
-        c.draw();
         while (!c.combatFinish()) {
-            while (c.getPlayer().getCurrentHP()>0) {
+            c.draw();
+            while (c.currentPower!=0) {
                 statusUpdate(c, c.getPlayer(), mob);
+                String card = sc.nextLine();
+
+                c.playCard(c.getPlayer(),mob,0,card);
+                c.currentPower-=1;
             }
+            c.endTurn();
+            c.currentPower=3;
             for(int i =0;i<mob.size();i++){
                 mob.get(i).action(gl.getPlayer());
             }
@@ -65,7 +72,18 @@ public class GameLogicTest {
     }
 
     public static void statusUpdate(Combat c, GameCharacter pc, ArrayList<GameCharacter> mob){
-        System.out.println();
+
+        System.out.println("Player HP:"+ pc.getCurrentHP() + "/" + pc.getMaxHP());
+        System.out.println("Current Power =" +c.currentPower + "/" + pc.getPower());
+        for(int i =0; i<mob.size();i++){
+            GameCharacter a = mob.get(i);
+            System.out.println("Mob"+i+ "HP:"+ a.getCurrentHP() + "/" + a.getMaxHP());
+        }
+        System.out.println("Current Hand:");
+        for(int i= 0;i<c.hand.size();i++){
+            System.out.println(i+" "+c.hand.get(i));
+        }
+        System.out.println("Please choose a card to play.");
     }
 
 

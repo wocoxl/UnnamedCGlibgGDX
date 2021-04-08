@@ -25,6 +25,7 @@ public class Combat {
     public GameCharacter player;
     public ArrayList<GameCharacter> mob;
     public int handSize;
+    public int currentPower;
 
 
     public Combat(GameCharacter player, ArrayList<GameCharacter> mob){
@@ -37,9 +38,13 @@ public class Combat {
         discardPile = new ArrayList<String>();
         hand = new ArrayList<String>();
         handSize = 5;
+        currentPower= player.getPower();
     }
 
     public void draw(){
+        if(currentDeck.size()<5) {
+            shuffle();
+        }
         for(int i =0; i<handSize;i++){
             hand.add(currentDeck.get(0));
             //System.out.println(currentDeck.get(0));
@@ -101,8 +106,11 @@ public class Combat {
         mob.action(player);
     }
 
-    private void endTurn(){
-
+    public void endTurn() {
+        while(hand.size()!=0){
+            discardPile.add(hand.get(0));
+            hand.remove(0);
+        }
     }
 
     public boolean combatFinish(){
