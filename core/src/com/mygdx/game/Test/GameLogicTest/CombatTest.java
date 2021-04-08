@@ -1,4 +1,4 @@
-package com.mygdx.game.Test;
+package com.mygdx.game.Test.GameLogicTest;
 
 import com.mygdx.game.GameLogic.Character.GameCharacter;
 import com.mygdx.game.GameLogic.Combat;
@@ -8,10 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 
+import java.util.ArrayList;
+
 public class CombatTest {
 
     public GameLogic game;
-    public GameCharacter[] mob;
+    public ArrayList<GameCharacter> mob;
     public Combat newCombat;
     public GameCharacter player2;
     @Before

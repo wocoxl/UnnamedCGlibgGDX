@@ -10,6 +10,10 @@ import java.util.Random;
 
 public class Combat {
 
+    public GameCharacter getPlayer() {
+        return player;
+    }
+
     public enum battleState{
         PLAYERTURN,
         MOBTURN
@@ -19,11 +23,11 @@ public class Combat {
     public ArrayList<String> discardPile;
     public ArrayList<String> hand;
     public GameCharacter player;
-    public GameCharacter[] mob;
+    public ArrayList<GameCharacter> mob;
     public int handSize;
 
 
-    public Combat(GameCharacter player, GameCharacter[] mob){
+    public Combat(GameCharacter player, ArrayList<GameCharacter> mob){
         this.player = player;
         this.mob = mob;
         currentDeck = new ArrayList<String>();
@@ -43,7 +47,7 @@ public class Combat {
         }
     }
 
-    private void StartTurn(){
+    public void StartTurn(){
         //while loop
 
         //shuffle
@@ -66,18 +70,30 @@ public class Combat {
         Collections.shuffle(currentDeck,ran);
     }
 
-    public void playCard(GameCharacter player, GameCharacter[] mob, int target, String card){
+    public void playCard(GameCharacter player, ArrayList<GameCharacter> mob, int target, String card){
+        hand.remove(card);
         switch(card){
             case "punch":{
-                combatHelper.dealDamage(3, mob[target]);
+                combatHelper.dealDamage(3, mob.get(target));
+                discardPile.add(card);
+                break;
             }
             case "block":{
                 combatHelper.applyBlock(3, player);
+                discardPile.add(card);
+                break;
+            }
+            case "Shield":{
+                for(int i =0; i<2; i++){
+                    discardPile.add("shield slam");
+                }
+                break;
+            }
+            case "shield slam":{
+                break;
             }
         }
 
-        hand.remove(card);
-        discardPile.add(card);
 
     }
 
@@ -87,5 +103,16 @@ public class Combat {
 
     private void endTurn(){
 
+    }
+
+    public boolean combatFinish(){
+        boolean finish = false;
+        int mobhp = 0;
+
+        if((player.getCurrentHP()<0)||(mob.size()==0)){
+            finish = true;
+        }
+
+        return finish;
     }
 }

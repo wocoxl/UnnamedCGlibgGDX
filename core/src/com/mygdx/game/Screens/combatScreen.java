@@ -2,12 +2,14 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -73,8 +75,14 @@ public class combatScreen implements Screen {
                 back.remove();
                 back.setSize(UIHelper.col_width*1,UIHelper.row_height/4);
                 back.setPosition(UIHelper.col_width*11,Gdx.graphics.getHeight()-UIHelper.row_height/4);
+                stage.clear();
                 stage.addActor(back);
                 enterCombat.remove();
+                ShapeRenderer sr = new ShapeRenderer();
+                sr.begin(ShapeRenderer.ShapeType.Filled);
+                sr.setColor(Color.RED);
+                sr.rect(2*UIHelper.col_width,1*UIHelper.row_height, UIHelper.col_width*5,UIHelper.row_height);
+                sr.end();
                 loadCombat();
 
             }
@@ -96,10 +104,11 @@ public class combatScreen implements Screen {
 
     @Override
     public void render(float v) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+
     }
 
     @Override
@@ -128,39 +137,19 @@ public class combatScreen implements Screen {
     }
 
     public void loadCombat(){
-        Texture texture = null;
-        Texture texture2 = null;
-        hpbar(texture, texture2);
+        hpbar();
 
     }
 
-    public void hpbar(Texture texture, Texture texture2){
-        int w = 1;
-        int h = 1;
-
-        Pixmap pixmap = createProceduralPixmap(w, h,0,1,0);
-        Pixmap pixmap2 = createProceduralPixmap(w, h,1,0,0);
-
-        texture = new Texture(pixmap);
-        texture2 = new Texture(pixmap2);
-
-        SpriteBatch batch = new SpriteBatch();
-        batch.begin();
-        batch.draw(texture2,2*UIHelper.col_width,2*UIHelper.row_height,300,20);
-        batch.draw(texture,2*UIHelper.col_width,2*UIHelper.row_height,200,20);
-        batch.end();
-
-
+    public void hpbar(){
+        ShapeRenderer sr = new ShapeRenderer();
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.setColor(Color.RED);
+        sr.rect(2*UIHelper.col_width,1*UIHelper.row_height, UIHelper.col_width*5,UIHelper.row_height);
+        sr.end();
 
     }
 
 
-    private Pixmap createProceduralPixmap (int width, int height,int r,int g,int b) {
-        Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
 
-        pixmap.setColor(r, g, b, 1);
-        pixmap.fill();
-
-        return pixmap;
-    }
 }

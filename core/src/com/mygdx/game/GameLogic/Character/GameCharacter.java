@@ -8,8 +8,10 @@ public class GameCharacter {
     protected int baseDefense;
     protected int currentDefense;
     protected ArrayList<String> deck;
+    protected int power;
     public GameCharacter(String equipment, boolean player){
         if(player==true) {
+            power = 3;
             deck = new ArrayList<String>();
             deck.add(equipment);
             for(int i = 0; i<3; i++){
@@ -63,4 +65,6 @@ public class GameCharacter {
         this.currentDefense = currentDefense;
     }
 
+    public void action(GameCharacter a) {
+    }
 }
