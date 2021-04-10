@@ -8,10 +8,12 @@ public class FighterMob extends Mob implements isMob {
         super();
         MaxHP = 18;
         currentHP = 18;
+        baseDefense = 2;
     }
 
     @Override
     public void action(GameCharacter player) {
         combatHelper.dealDamage(5, player);
+        combatHelper.applyBlock(1,this);
     }
 }

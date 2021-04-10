@@ -55,18 +55,28 @@ public class GameLogicTest {
         System.out.println("Combat begins.");
         while (!c.combatFinish()) {
             c.draw();
-            while (c.currentPower!=0) {
+            while (c.currentPower!=0) {//condition of turn ending
+                if(mob.size()==0) break;
                 statusUpdate(c, c.getPlayer(), mob);
                 String card = sc.nextLine();
-
-                c.playCard(c.getPlayer(),mob,0,card);
+                int target = 0;
+                c.playCard(c.getPlayer(),mob,target,card);
                 c.currentPower-=1;
+
+                //check if mob dies
+                if(mob.get(target).getCurrentHP()<=0){
+                    mob.remove(mob.get(target));
+                }
             }
             c.endTurn();
-            c.currentPower=3;
+
             for(int i =0;i<mob.size();i++){
                 mob.get(i).action(gl.getPlayer());
+                //mobs' actions
             }
+            //reset power
+            c.currentPower=3;
+
         }
 
     }

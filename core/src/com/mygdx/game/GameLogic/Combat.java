@@ -95,6 +95,8 @@ public class Combat {
                 break;
             }
             case "shield slam":{
+                combatHelper.applyBlock(2,player);
+                combatHelper.dealDamage(player.getCurrentDefense(),mob.get(target));
                 break;
             }
         }
@@ -115,7 +117,8 @@ public class Combat {
 
     public boolean combatFinish(){
         boolean finish = false;
-        int mobhp = 0;
+        //int mobhp = 0;
+
 
         if((player.getCurrentHP()<0)||(mob.size()==0)){
             finish = true;
