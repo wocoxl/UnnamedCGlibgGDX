@@ -97,7 +97,8 @@ public class menuScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
+        //dispose();
     }
 
     @Override
@@ -198,7 +199,9 @@ public class menuScreen implements Screen {
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 //outputLabel.setText("Press a Button");
                 game.logic = new GameLogic(num, "shield");
+                hide();
                 game.setScreen(new combatScreen(game));
+
                 //play();
             }
             @Override
@@ -219,7 +222,9 @@ public class menuScreen implements Screen {
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 //outputLabel.setText("Press a Button");
                 game.logic = new GameLogic(num, "sword");
+                hide();
                 game.setScreen(new combatScreen(game));
+
                 //play();
             }
             @Override
@@ -240,7 +245,9 @@ public class menuScreen implements Screen {
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 //outputLabel.setText("Press a Button");
                 game.logic = new GameLogic(num, "spear");
+                hide();
                 game.setScreen(new combatScreen(game));
+
                 //play();
             }
             @Override

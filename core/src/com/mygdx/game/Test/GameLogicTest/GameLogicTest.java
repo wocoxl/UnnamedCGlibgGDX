@@ -45,7 +45,7 @@ public class GameLogicTest {
         //initialize game/player character
         gl = new GameLogic(pc, equipment);
 
-        //initialize mob
+        //initialize mob(s)
         ArrayList<GameCharacter> mob = new ArrayList<GameCharacter>();
         GameCharacter fighterMob = new FighterMob();
         mob.add(fighterMob);
