@@ -7,26 +7,27 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.GameLogic.Helper.UIHelper;
 import com.mygdx.game.UnnamedCG;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class combatScreen implements Screen {
     private Stage stage;
     private UnnamedCG game;
     private Label outputLabel;
     private ArrayList<Button> characters;
-
+    private HealthBar healthBar;
+    private long lastUpdate = 0L;
 
     Button back;
     Button enterCombat;
@@ -39,13 +40,13 @@ public class combatScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         Image BG = new Image(img);
-        stage.addActor(BG);
+        //stage.addActor(BG);
 
         //back button
         back = new TextButton("back",UIHelper.glassy,"small");
-        back.setSize(UIHelper.col_width*2,UIHelper.row_height/4);
-        back.setPosition(UIHelper.col_width,Gdx.graphics.getHeight()-UIHelper.row_height*6);
         back.setTransform(true);
+        back.setSize(UIHelper.col_width*1,UIHelper.row_height/4);
+        back.setPosition(UIHelper.col_width*11,Gdx.graphics.getHeight()-UIHelper.row_height/4);
         //playButton.scaleBy(10f);
         back.addListener(new InputListener(){
             @Override
@@ -63,6 +64,8 @@ public class combatScreen implements Screen {
         });
         stage.addActor(back);
 
+        /**
+
         enterCombat = new TextButton("Enter Combat",UIHelper.glassy,"small");
         enterCombat.setSize(UIHelper.col_width*2,UIHelper.row_height);
         enterCombat.setPosition(UIHelper.col_width*4,Gdx.graphics.getHeight()-UIHelper.row_height*3);
@@ -73,16 +76,10 @@ public class combatScreen implements Screen {
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 //outputLabel.setText("Press a Button");
                 back.remove();
-                back.setSize(UIHelper.col_width*1,UIHelper.row_height/4);
-                back.setPosition(UIHelper.col_width*11,Gdx.graphics.getHeight()-UIHelper.row_height/4);
-                stage.clear();
+
+                //stage.clear();
                 stage.addActor(back);
                 enterCombat.remove();
-                ShapeRenderer sr = new ShapeRenderer();
-                sr.begin(ShapeRenderer.ShapeType.Filled);
-                sr.setColor(Color.RED);
-                sr.rect(2*UIHelper.col_width,1*UIHelper.row_height, UIHelper.col_width*5,UIHelper.row_height);
-                sr.end();
                 loadCombat();
 
             }
@@ -93,9 +90,17 @@ public class combatScreen implements Screen {
                 return true;
             }
         });
-        stage.addActor((enterCombat));
+        //stage.addActor((enterCombat));
+        **/
+        healthBar = new HealthBar(100, 10);
+        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
+        stage.addActor(healthBar);
+
+
 
     }
+
+
 
     @Override
     public void show() {
@@ -106,8 +111,14 @@ public class combatScreen implements Screen {
     public void render(float v) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act();
+
+        if (System.currentTimeMillis() - lastUpdate > TimeUnit.SECONDS.toMillis(5)) {
+            healthBar.setValue(healthBar.getValue() - 0.1f);
+            lastUpdate = System.currentTimeMillis();
+        }
         stage.draw();
+        stage.act();
+
 
     }
 
@@ -128,7 +139,7 @@ public class combatScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
@@ -136,19 +147,7 @@ public class combatScreen implements Screen {
         stage.dispose();
     }
 
-    public void loadCombat(){
-        hpbar();
 
-    }
-
-    public void hpbar(){
-        ShapeRenderer sr = new ShapeRenderer();
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.setColor(Color.RED);
-        sr.rect(2*UIHelper.col_width,1*UIHelper.row_height, UIHelper.col_width*5,UIHelper.row_height);
-        sr.end();
-
-    }
 
 
 
