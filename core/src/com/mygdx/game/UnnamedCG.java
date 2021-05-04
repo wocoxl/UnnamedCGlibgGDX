@@ -58,7 +58,7 @@ public class UnnamedCG extends Game {
 
 	@Override
 	public void dispose () {
-		//batch.dispose();
+		batch.dispose();
 		//img.dispose();
 	}
 }

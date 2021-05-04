@@ -19,13 +19,15 @@ import com.mygdx.game.GameLogic.Helper.UIHelper;
 import com.mygdx.game.UnnamedCG;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class combatScreen implements Screen {
     private Stage stage;
     private UnnamedCG game;
     private Label outputLabel;
     private ArrayList<Button> characters;
-
+    private HealthBar healthBar;
+    private long lastUpdate = 0L;
 
     Button back;
     Button enterCombat;
@@ -38,7 +40,7 @@ public class combatScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         Image BG = new Image(img);
-        stage.addActor(BG);
+        //stage.addActor(BG);
 
         //back button
         back = new TextButton("back",UIHelper.glassy,"small");
@@ -90,7 +92,9 @@ public class combatScreen implements Screen {
         });
         //stage.addActor((enterCombat));
         **/
-        //red
+        healthBar = new HealthBar(100, 10);
+        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
+        stage.addActor(healthBar);
 
 
 
@@ -107,6 +111,11 @@ public class combatScreen implements Screen {
     public void render(float v) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (System.currentTimeMillis() - lastUpdate > TimeUnit.SECONDS.toMillis(5)) {
+            healthBar.setValue(healthBar.getValue() - 0.1f);
+            lastUpdate = System.currentTimeMillis();
+        }
         stage.draw();
         stage.act();
 
@@ -130,7 +139,7 @@ public class combatScreen implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
